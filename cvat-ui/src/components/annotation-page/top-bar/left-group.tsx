@@ -11,7 +11,8 @@ import Timeline from 'antd/lib/timeline';
 import Dropdown from 'antd/lib/dropdown';
 
 import AnnotationMenuContainer from 'containers/annotation-page/top-bar/annotation-menu';
-import { MainMenuIcon, SaveIcon, UndoIcon, RedoIcon } from 'icons';
+import { useOCRText } from '../ocr-text';
+import { MainMenuIcon, SaveIcon, UndoIcon, RedoIcon, AIToolsIcon } from 'icons';
 
 interface Props {
     saving: boolean;
@@ -39,6 +40,8 @@ function LeftGroup(props: Props): JSX.Element {
         onUndoClick,
         onRedoClick,
     } = props;
+
+    const { toggleOpen: toggleOCRText } = useOCRText();
 
     return (
         <Col className='cvat-annotation-header-left-group'>
@@ -85,6 +88,15 @@ function LeftGroup(props: Props): JSX.Element {
             >
                 <Icon component={RedoIcon} />
                 Redo
+            </Button>
+            <Button
+                title={`OCR`}
+                type='link'
+                className='cvat-annotation-header-button'
+                onClick={toggleOCRText}
+            >
+                <Icon component={AIToolsIcon} />
+                OCR
             </Button>
         </Col>
     );

@@ -404,6 +404,7 @@ class FrameMetaSerializer(serializers.Serializer):
     width = serializers.IntegerField()
     height = serializers.IntegerField()
     name = serializers.CharField(max_length=1024)
+    ocr = serializers.CharField()
 
 class PluginsSerializer(serializers.Serializer):
     GIT_INTEGRATION = serializers.BooleanField()

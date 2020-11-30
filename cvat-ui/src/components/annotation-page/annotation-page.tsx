@@ -15,6 +15,7 @@ import StatisticsModalContainer from 'containers/annotation-page/top-bar/statist
 import StandardWorkspaceComponent from './standard-workspace/standard-workspace';
 import AttributeAnnotationWorkspace from './attribute-annotation-workspace/attribute-annotation-workspace';
 import TagAnnotationWorkspace from './tag-annotation-workspace/tag-annotation-workspace';
+import OCRText, { OCTTextContextProvider } from './ocr-text';
 
 interface Props {
     job: any | null | undefined;
@@ -23,10 +24,11 @@ interface Props {
     saveLogs(): void;
     closeJob(): void;
     workspace: Workspace;
+    frameOcr: string;
 }
 
 export default function AnnotationPageComponent(props: Props): JSX.Element {
-    const { job, fetching, getJob, closeJob, saveLogs, workspace } = props;
+    const { job, fetching, getJob, closeJob, saveLogs, workspace, frameOcr } = props;
 
     const history = useHistory();
     useEffect(() => {
@@ -69,25 +71,30 @@ export default function AnnotationPageComponent(props: Props): JSX.Element {
 
     return (
         <Layout className='cvat-annotation-page'>
-            <Layout.Header className='cvat-annotation-header'>
-                <AnnotationTopBarContainer />
-            </Layout.Header>
-            {workspace === Workspace.STANDARD && (
-                <Layout.Content style={{ height: '100%' }}>
-                    <StandardWorkspaceComponent />
-                </Layout.Content>
-            )}
-            {workspace === Workspace.ATTRIBUTE_ANNOTATION && (
-                <Layout.Content style={{ height: '100%' }}>
-                    <AttributeAnnotationWorkspace />
-                </Layout.Content>
-            )}
-            {workspace === Workspace.TAG_ANNOTATION && (
-                <Layout.Content style={{ height: '100%' }}>
-                    <TagAnnotationWorkspace />
-                </Layout.Content>
-            )}
-            <StatisticsModalContainer />
+            <OCTTextContextProvider>
+                <Layout.Header className='cvat-annotation-header'>
+                    <AnnotationTopBarContainer />
+                </Layout.Header>
+                {workspace === Workspace.STANDARD && (
+                    <Layout.Content style={{ height: '100%' }}>
+                        <StandardWorkspaceComponent />
+                        <OCRText frameOcr={frameOcr}/>
+                    </Layout.Content>
+                )}
+                {workspace === Workspace.ATTRIBUTE_ANNOTATION && (
+                    <Layout.Content style={{ height: '100%' }}>
+                        <AttributeAnnotationWorkspace />
+                        <OCRText frameOcr={frameOcr}/>
+                    </Layout.Content>
+                )}
+                {workspace === Workspace.TAG_ANNOTATION && (
+                    <Layout.Content style={{ height: '100%' }}>
+                        <TagAnnotationWorkspace />
+                        <OCRText frameOcr={frameOcr}/>
+                    </Layout.Content>
+                )}
+                <StatisticsModalContainer />
+            </OCTTextContextProvider>
         </Layout>
     );
 }

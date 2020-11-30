@@ -654,6 +654,7 @@ export function changeFrameAsync(toFrame: number, fillBuffer?: boolean, frameSte
                         minZ: state.annotation.annotations.zLayer.min,
                         maxZ: state.annotation.annotations.zLayer.max,
                         curZ: state.annotation.annotations.zLayer.cur,
+                        ocr: state.annotation.player.frame.ocr,
                     },
                 });
 
@@ -705,6 +706,7 @@ export function changeFrameAsync(toFrame: number, fillBuffer?: boolean, frameSte
                     curZ: maxZ,
                     changeTime: currentTime + delay,
                     delay,
+                    ocr: data.ocr,
                 },
             });
         } catch (error) {
@@ -944,6 +946,7 @@ export function getJobAsync(tid: number, jid: number, initialFrame: number, init
                     states,
                     frameNumber,
                     frameFilename: frameData.filename,
+                    frameOcr: frameData.ocr,
                     frameData,
                     colors,
                     filters,
