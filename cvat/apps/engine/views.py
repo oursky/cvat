@@ -646,6 +646,7 @@ class TaskViewSet(auth.TaskGetQuerySetMixin, viewsets.ModelViewSet):
             'width': item.width,
             'height': item.height,
             'name': item.path,
+            'ocr': _get_ocr_value(item.path),
         } for item in media]
 
         db_data = db_task.data
@@ -1109,3 +1110,12 @@ def _export_annotations(db_task, rq_id, request, format_name, action, callback, 
         meta={ 'request_time': timezone.localtime() },
         result_ttl=ttl, failure_ttl=ttl)
     return Response(status=status.HTTP_202_ACCEPTED)
+
+def _get_ocr_value(image_path):
+    stem, file_ext = os.path.splitext(image_path)
+    ocr_file_path = os.path.join('/home/django/share', f'{stem}.txt')
+    if not os.path.exists(ocr_file_path):
+        return ocr_file_path
+
+    with open(ocr_file_path, 'r') as fp:
+        return fp.read()

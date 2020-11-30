@@ -20,6 +20,7 @@ interface StateToProps {
     job: any | null | undefined;
     fetching: boolean;
     workspace: Workspace;
+    frameOcr: string;
 }
 
 interface DispatchToProps {
@@ -33,6 +34,9 @@ function mapStateToProps(state: CombinedState, own: OwnProps): StateToProps {
     const jobID = +params.jid;
     const {
         annotation: {
+            player: {
+                frame: { ocr: frameOcr },
+            },
             job: { requestedId, instance: job, fetching },
             workspace,
         },
@@ -42,6 +46,7 @@ function mapStateToProps(state: CombinedState, own: OwnProps): StateToProps {
         job: jobID === requestedId ? job : null,
         fetching,
         workspace,
+        frameOcr,
     };
 }
 

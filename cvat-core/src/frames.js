@@ -20,6 +20,7 @@
     class FrameData {
         constructor({
             width, height, name, taskID, frameNumber, startFrame, stopFrame, decodeForward,
+            ocr,
         }) {
             Object.defineProperties(
                 this,
@@ -82,6 +83,10 @@
                     },
                     decodeForward: {
                         value: decodeForward,
+                        writable: false,
+                    },
+                    ocr: {
+                        value: ocr,
                         writable: false,
                     },
                 }),

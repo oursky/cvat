@@ -450,3 +450,19 @@
         }
     }
 }
+
+.ocr-text-container {
+    position: absolute;
+    top: 110px;
+    left: 44px;
+    width: calc(100% - 344px);
+    height: calc(100vh - 110px);
+    z-index: 1000;
+    overflow: scroll;
+    padding: 12px;
+    background: rgba(255,255,255,0.9);
+
+    @media (max-width: 1280px) {
+        width: 936px;
+    }
+}

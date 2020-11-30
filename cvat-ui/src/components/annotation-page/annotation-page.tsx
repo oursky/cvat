@@ -22,6 +22,7 @@ import AnnotationTopBarContainer from 'containers/annotation-page/top-bar/top-ba
 import { Workspace } from 'reducers/interfaces';
 import { usePrevious } from 'utils/hooks';
 import './styles.scss';
+import OCRText, { OCTTextContextProvider } from './ocr-text';
 
 interface Props {
     job: any | null | undefined;
@@ -30,11 +31,12 @@ interface Props {
     saveLogs(): void;
     closeJob(): void;
     workspace: Workspace;
+    frameOcr: string;
 }
 
 export default function AnnotationPageComponent(props: Props): JSX.Element {
     const {
-        job, fetching, getJob, closeJob, saveLogs, workspace,
+        job, fetching, getJob, closeJob, saveLogs, workspace, frameOcr
     } = props;
     const prevJob = usePrevious(job);
     const prevFetching = usePrevious(fetching);
@@ -103,34 +105,40 @@ export default function AnnotationPageComponent(props: Props): JSX.Element {
 
     return (
         <Layout className='cvat-annotation-page'>
-            <Layout.Header className='cvat-annotation-header'>
-                <AnnotationTopBarContainer />
-            </Layout.Header>
-            {workspace === Workspace.STANDARD3D && (
-                <Layout.Content className='cvat-annotation-layout-content'>
-                    <StandardWorkspace3DComponent />
-                </Layout.Content>
-            )}
-            {workspace === Workspace.STANDARD && (
-                <Layout.Content className='cvat-annotation-layout-content'>
-                    <StandardWorkspaceComponent />
-                </Layout.Content>
-            )}
-            {workspace === Workspace.ATTRIBUTE_ANNOTATION && (
-                <Layout.Content className='cvat-annotation-layout-content'>
-                    <AttributeAnnotationWorkspace />
-                </Layout.Content>
-            )}
-            {workspace === Workspace.TAG_ANNOTATION && (
-                <Layout.Content className='cvat-annotation-layout-content'>
-                    <TagAnnotationWorkspace />
-                </Layout.Content>
-            )}
-            {workspace === Workspace.REVIEW_WORKSPACE && (
-                <Layout.Content className='cvat-annotation-layout-content'>
-                    <ReviewAnnotationsWorkspace />
-                </Layout.Content>
-            )}
+            <OCTTextContextProvider>
+                <Layout.Header className='cvat-annotation-header'>
+                    <AnnotationTopBarContainer />
+                </Layout.Header>
+                {workspace === Workspace.STANDARD3D && (
+                    <Layout.Content className='cvat-annotation-layout-content'>
+                        <StandardWorkspace3DComponent />
+                    </Layout.Content>
+                )}
+                {workspace === Workspace.STANDARD && (
+                    <Layout.Content className='cvat-annotation-layout-content'>
+                        <StandardWorkspaceComponent />
+                        <OCRText frameOcr={frameOcr}/>
+                    </Layout.Content>
+                )}
+                {workspace === Workspace.ATTRIBUTE_ANNOTATION && (
+                    <Layout.Content className='cvat-annotation-layout-content'>
+                        <AttributeAnnotationWorkspace />
+                        <OCRText frameOcr={frameOcr}/>
+                    </Layout.Content>
+                )}
+                {workspace === Workspace.TAG_ANNOTATION && (
+                    <Layout.Content className='cvat-annotation-layout-content'>
+                        <TagAnnotationWorkspace />
+                        <OCRText frameOcr={frameOcr}/>
+                    </Layout.Content>
+                )}
+                {workspace === Workspace.REVIEW_WORKSPACE && (
+                    <Layout.Content className='cvat-annotation-layout-content'>
+                        <ReviewAnnotationsWorkspace />
+                        <OCRText frameOcr={frameOcr}/>
+                    </Layout.Content>
+                )}
+            </OCTTextContextProvider>
             <FiltersModalContainer visible={false} />
             <StatisticsModalContainer />
             <SubmitAnnotationsModal />

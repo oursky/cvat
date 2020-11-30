@@ -131,6 +131,7 @@ export default (state = defaultState, action: AnyAction): AnnotationState => {
                 states,
                 frameNumber: number,
                 frameFilename: filename,
+                frameOcr: ocr,
                 colors,
                 filters,
                 frameData: data,
@@ -176,6 +177,7 @@ export default (state = defaultState, action: AnyAction): AnnotationState => {
                         filename,
                         number,
                         data,
+                        ocr,
                     },
                     frameAngles: Array(job.stopFrame - job.startFrame + 1).fill(0),
                 },
@@ -237,7 +239,7 @@ export default (state = defaultState, action: AnyAction): AnnotationState => {
         }
         case AnnotationActionTypes.CHANGE_FRAME_SUCCESS: {
             const {
-                number, data, filename, states, minZ, maxZ, curZ, delay, changeTime,
+                number, data, filename, states, minZ, maxZ, curZ, delay, changeTime, ocr
             } = action.payload;
 
             const activatedStateID = states
@@ -257,6 +259,7 @@ export default (state = defaultState, action: AnyAction): AnnotationState => {
                         fetching: false,
                         changeTime,
                         delay,
+                        ocr,
                     },
                     contextImage: {
                         ...state.player.contextImage,
